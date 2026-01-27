@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBUT-全自动薏米种植机 - 宣传视频</title>
+    <link rel="stylesheet" href="video.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-left">
+                <div class="logo">
+                    <a href="./index.html">
+                        <img src="./resources/index-nav.png" alt="HBUT Logo">
+                        <span></span>
+                    </a>
+                </div>
+
+                <nav class="main-menu">
+                    <ul>
+                        <li><a href="./introduction.html">基本介绍</a></li>
+                        <li><a href="./video.html">视频介绍</a></li>
+                        <li><a href="./calculate.html">参数设计</a></li>
+                        <li><a href="./download.html">技术优势</a></li>
+                        <li><a href="#">未来开发</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="navbar-right">
+                <nav class="secondary-menu">
+                    <ul>
+                        <li><a href="#">服务与支持</a></li>
+                        <li><a href="#">合作与分享</a></li>
+                        <li><a href="#">联系方式</a></li>
+                        <li><a href="./shopping.html">商城</a></li>
+                    </ul>
+                </nav>
+
+                <div class="icon-menu">
+                    <a href="#" class="icon-link"><i class="fas fa-search"></i></a>
+                    <a href="#" class="icon-link"><i class="fas fa-shopping-cart"></i></a>
+                    <a href="#" class="icon-link"><i class="fas fa-user"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 视频播放主内容区 -->
+    <main class="video-main-content">
+        <div class="video-container">
+            <div class="video-header">
+                <h1>全自动薏米种植机宣传介绍</h1>
+                <p class="video-subtitle">展示"薏"帆"丰"顺-薏米自动播种施肥机的创新设计与实际应用</p>
+            </div>
+            
+            <!-- 简化的视频播放器区域 -->
+            <div class="video-player-wrapper">
+                <div class="video-player">
+                    <!-- 使用原生视频控制 -->
+                    <video controls width="100%" height="auto">
+                        <source src="./resources/video.mp4" type="video/mp4" >
+                    </video>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2024 湖北工业大学 - 全自动薏米种植施肥机项目组</p>
+    </footer>
+
+    <script>
+        // ===== 导航栏滚动效果 =====
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

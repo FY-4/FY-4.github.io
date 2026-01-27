@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>参数计算 - 薏米自动播种施肥机</title>
+    <link rel="stylesheet" href="./calculate.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax 配置 -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                packages: {'[+]': ['cases', 'ams']}
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-left">
+                <div class="logo">
+                    <a href="./index.html">
+                        <img src="./resources/index-nav.png" alt="HBUT Logo">
+                        <span></span>
+                    </a>
+                </div>
+
+                <nav class="main-menu">
+                    <ul>
+                        <li><a href="./introduction.html">基本介绍</a></li>
+                        <li><a href="./video.html">视频介绍</a></li>
+                        <li><a href="./calculate.html">参数设计</a></li>
+                        <li><a href="./download.html">技术优势</a></li>
+                        <li><a href="#">未来开发</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="navbar-right">
+                <nav class="secondary-menu">
+                    <ul>
+                        <li><a href="#">服务与支持</a></li>
+                        <li><a href="#">合作与分享</a></li>
+                        <li><a href="#">联系方式</a></li>
+                        <li><a href="./shopping.html">商城</a></li>
+                    </ul>
+                </nav>
+
+                <div class="icon-menu">
+                    <a href="#" class="icon-link"><i class="fas fa-search"></i></a>
+                    <a href="#" class="icon-link"><i class="fas fa-shopping-cart"></i></a>
+                    <a href="#" class="icon-link"><i class="fas fa-user"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h1>参数计算-可行性证明</h1>
+        
+        <!-- 选型计算 -->
+        <div class="calculation-section">
+            <h2>选型计算</h2>
+            
+            <!-- 电机选型计算 -->
+            <h3>电机选型计算</h3>
+            <p>"薏"帆"丰"顺满载状态重量 $M = 125\mathrm{kg}$，取轮胎与土地的摩擦系数 $\mu = 0.5$，电机带动小齿轮 $z_1 = 17$，由小齿轮带动大齿轮 $z_2 = 40$，传动比 $i \approx 2.3$ 大齿轮与车轮同角速度旋转，齿轮传动效率 $\eta = 98\%$，初定农机最大匀速为 $0.2\mathrm{m/s}$，加速时间1s。</p>
+            
+            <div class="formula-box">
+                <div class="formula">匀速时的驱动力计算为：</div>
+                <div class="formula">$$F = M \times g \times \mu = 625\mathrm{N}$$</div>
+                
+                <div class="formula">匀速时电机的扭矩为：</div>
+                <div class="formula">$$T = \frac{F \times r}{i \times \eta} = 5.5\mathrm{N\cdot m}$$</div>
+                
+                <div class="formula">经分析，加速启动的驱动力为：</div>
+                <div class="formula">$$F_{\text{accel}} = F + M \times a = 650\mathrm{N}$$</div>
+                
+                <div class="formula">则加速时电机的扭矩为：</div>
+                <div class="formula">$$T_{\text{accel}} = \frac{F_{\text{accel}} \times r}{i \times \eta} = 5.7\mathrm{N\cdot m}$$</div>
+            </div>
+            
+            <p>其中产品时一台两驱农机，由两个电机同时为"薏"帆"丰"顺提供动力，因此可以选择两个同为额定扭矩4N·m，最大扭矩5N·m的电机，为后续提高农机播种速度留有余量。</p>
+            
+            <!--同步带选型 -->
+            <h3>同步带选型</h3>
+            <p>"薏"帆"丰"顺由其传动机构，实现对播种和施肥的精确控制，因此同步带的选型与电机选型的重要性不分伯仲。机器以电机为主动件带动车轮车轴旋转，依靠同步带传递到播种机构上所穿的10mm钢轴，再由播种机构的钢轴传递到施肥机构的10mm钢轴上，实现对播种施肥机构的运转与控制。</p>
+            
+            <p>其中车轮周长约为60cm，播种器与施肥器旋转一周会进行播种施肥两次，然薏米最佳播种间距应为15cm，种子和肥料同时进行，由此易得，车轮车轴与播种机构上的钢轴传动比 $i_1 = 2$，播种机构与施肥机构则为1：1传动，传动比 $i_2 = 1$。</p>
+            
+            <div class="formula-box">
+                <div class="formula">行进部分处同步带张力计算：</div>
+                <div class="formula">$$F = \mu \times M \times g$$</div>
+                
+                <div class="formula">同步带功率计算：</div>
+                <div class="formula">$$P = F \times v$$</div>
+                
+                <div class="formula">取工况系数 $K_a = 1.5$，则设计功率：</div>
+                <div class="formula">$$P_d = K_a \times P$$</div>
+            </div>
+            
+            <p>通过查表确定同步带的带型为5M，节距为5mm，其中小带轮齿数 $z_1 = 25$，大带轮齿数 $z_2 = 50$，分别求得带轮节圆直径为 $d_1 = 39.79\mathrm{mm}$，$d_2 = 79.58\mathrm{mm}$，初定轴间距为273，经计算得带长 $L = 734.96\mathrm{mm}$，取带宽为20mm。</p>
+            
+            <!-- 凸轮设计 -->
+            <h3>凸轮设计</h3>
+            <p>凸轮设计运用在"薏"帆"丰"顺两处地方，分别是由凸轮对开垦机构和覆土机构进行抬升，其次便是控制浇水机构的开关。</p>
+            
+            <p>浇水机构处凸轮设计：</p>
+            <table class="simple-table">
+                <tr>
+                    <th>参数</th>
+                    <th>符号</th>
+                    <th>数值</th>
+                </tr>
+                <tr>
+                    <td>推程角</td>
+                    <td>$\Phi$</td>
+                    <td>$105^\circ$</td>
+                </tr>
+                <tr>
+                    <td>远休止角</td>
+                    <td>$\Phi_c$</td>
+                    <td>$90^\circ$</td>
+                </tr>
+                <tr>
+                    <td>回程角</td>
+                    <td>$\Phi'$</td>
+                    <td>$105^\circ$</td>
+                </tr>
+                <tr>
+                    <td>近休止角</td>
+                    <td>-</td>
+                    <td>$60^\circ$</td>
+                </tr>
+                <tr>
+                    <td>从动件的行程</td>
+                    <td>$h$</td>
+                    <td>$24\mathrm{mm}$</td>
+                </tr>
+                <tr>
+                    <td>基圆半径</td>
+                    <td>$r_0$</td>
+                    <td>$18\mathrm{mm}$</td>
+                </tr>
+                <tr>
+                    <td>滚子半径</td>
+                    <td>$r_i$</td>
+                    <td>$2.5\mathrm{mm}$</td>
+                </tr>
+                <tr>
+                    <td>偏心距</td>
+                    <td>$e$</td>
+                    <td>$0$</td>
+                </tr>
+            </table>
+            
+            <div class="formula-box">
+                <div class="formula">压力角表达式：</div>
+                <div class="formula">$$\alpha = \arctan \frac{\frac{ds}{d\phi}}{r_0 + s}$$</div>
+                
+                <div class="formula">实际轮廓坐标：</div>
+                <div class="formula">$$\begin{cases} x = (r_0 + s)\sin\phi \\ y = (r_0 + s)\cos\phi \end{cases}$$</div>
+            </div>
+            
+            <p>位移$s$与运动角$\Phi$的关系式：</p>
+            <div class="formula-box">
+                $$s(\phi) = 
+                \begin{cases}
+                h\left(\frac{10}{\Phi^3}\phi^3 - \frac{15}{\Phi^4}\phi^4 + \frac{6}{\Phi^5}\phi^5\right) & \phi \in [0^\circ, 105^\circ] \\
+                24 & \phi \in [105^\circ, 195^\circ] \\
+                h - h\left(\frac{10}{\Phi^3}(\phi-195)^3 - \frac{15}{\Phi^4}(\phi-195)^4 + \frac{6}{\Phi^5}(\phi-195)^5\right) & \phi \in [195^\circ, 300^\circ] \\
+                0 & \phi \in [300^\circ, 360^\circ]
+                \end{cases}$$
+            </div>
+            
+            <div class="formula-box">
+                <div class="formula">理想轮廓坐标：</div>
+                <div class="formula">$$X = x + r_r\frac{\frac{dy}{d\phi}}{\sqrt{\left(\frac{dx}{d\phi}\right)^2 + \left(\frac{dy}{d\phi}\right)^2}}$$</div>
+                
+                <div class="formula">实际轮廓速度关系式：</div>
+                <div class="formula">$$\begin{cases} \frac{dx}{d\phi} = \frac{ds}{d\phi}\sin\phi + (r_0 + s)\cos\phi \\ \frac{dy}{d\phi} = \frac{ds}{d\phi}\cos\phi - (r_0 + s)\sin\phi \end{cases}$$</div>
+            </div>
+            
+            <p>位移速度$\frac{ds}{d\phi}$与运动角$\phi$的关系式：</p>
+            <div class="formula-box">
+                $$\begin{aligned}
+                & \frac{ds}{d\phi} = h\left(\frac{30}{\Phi^3}\phi^2 - \frac{60}{\Phi^4}\phi^3 + \frac{30}{\Phi^5}\phi^4\right) \quad \phi \in [0^\circ, 105^\circ] \\
+                & \frac{ds}{d\phi} = 0 \quad \phi \in [105^\circ, 195^\circ] \\
+                & \frac{ds}{d\phi} = -h\left[\frac{30}{\Phi^3}(\phi-195)^2 - \frac{60}{\Phi^4}(\phi-195)^3 + \frac{30}{\Phi^5}(\phi-195)^4\right] \quad \phi \in [195^\circ, 300^\circ] \\
+                & \frac{ds}{d\phi} = 0 \quad \phi \in [300^\circ, 360^\circ]
+                \end{aligned}$$
+            </div>
+            
+            <!-- 传动齿轮设计 -->
+            <h3>传动齿轮设计</h3>
+            <p>齿轮传动出现在本台农机两块区域，一块处于行进机构中，一处位于搅拌机构。</p>
+            
+            <p>1. 行进机构处选精度等级、材料及齿数</p>
+            <ul>
+                <li>选择小齿轮材料为碳板雕刻，齿面硬度280HRC</li>
+                <li>齿轮的三公差组精度为7级，齿厚上偏差为f级，齿厚下偏差为1级</li>
+                <li>选小齿轮齿数 $z_1 = 17$，大齿轮齿数 $z_2 = 40$，模数为2.75</li>
+            </ul>
+            
+            <p>2. 几何尺寸确定</p>
+            <div class="formula-box">
+                <div class="formula">计算分度圆直径：</div>
+                <div class="formula">$$d_1 = z_1 \times m = 17 \times 2.75 = 46.75\mathrm{mm}$$</div>
+                <div class="formula">$$d_2 = z_2 \times m = 40 \times 2.75 = 110\mathrm{mm}$$</div>
+                <div class="formula">计算中心距：</div>
+                <div class="formula">$$a_1 = \frac{d_1 + d_2}{2} = \frac{46.75 + 110}{2} = 78.375\mathrm{mm}$$</div>
+            </div>
+            
+            <p>3. 校核齿根弯曲疲劳强度</p>
+            <div class="formula-box">
+                <div class="formula">齿根弯曲疲劳强度条件：</div>
+                <div class="formula">$$\sigma_y = \frac{2K_F T_1 Y_{Fa} Y_{Sa} Y_e}{\Phi_d m_n^2 z_1^2} \leq [\sigma_r]$$</div>
+            </div>
+            
+            <p>确定公式中各个参数值：</p>
+            <ul>
+                <li>计算弯曲疲劳强度重合度系数$Y$：$Y_r = 0.25 + 0.75/e_r = 0.25 + 0.75/1.78 = 0.671$</li>
+                <li>由当量齿数，查图得齿形系数和应力修正系数：$Y_{fa2} = 2.49$，$Y_{fa2} = 2.14$，$Y_{sa1} = 1.64$，$Y_{sa2} = 1.83$</li>
+                <li>计算实际载荷系数$K_F$：由表查得齿间载荷分配系数$K_F = 1.2$，根据$K_{HF} = 1.347$，结合$b/h = 14.67$查图得$K_F = 1.339$，则载荷系数为$K_F = K_L K_F K_F K_F = 1 \times 1.12 \times 1.2 \times 1.339 = 1.8$</li>
+                <li>计算齿根弯曲疲劳许用应力$[\sigma]$：查得小齿轮和大齿轮的弯曲疲劳极限分别为$\sigma_{flam} = 500 \mathrm{MPa}$、$\sigma_{flam} = 420 \mathrm{MPa}$、$\sigma_{flam} = 380 \mathrm{MPa}$，由图查取弯曲疲劳寿命系数$K_{flam} = 0.84$、$K_{flam} = 0.88$、$K_{flam} = 0.90$，取安全系数$S = 1.4$</li>
+            </ul>
+            
+            <div class="formula-box">
+                <div class="formula">弯曲疲劳许用应力：</div>
+                <div class="formula">$$[\sigma_r]_1 = \frac{K_{FN1}\sigma_{Flim1}}{S} = 300 \mathrm{MPa}$$</div>
+                <div class="formula">$$[\sigma_r]_2 = \frac{K_{FN1}\sigma_{Flim1}}{S} = 264 \mathrm{MPa}$$</div>
+                <div class="formula">$$[\sigma_F]_2 = \frac{K_{FN1}\sigma_{Flim1}}{S} = 244.3 \mathrm{MPa}$$</div>
+            </div>
+            
+            <p>齿根弯曲疲劳强度校核：</p>
+            <div class="formula-box">
+                <div class="formula">$$\sigma_{F1} = \frac{2K_F T_1 Y_{Fa} Y_{Sa} Y_\varepsilon}{\Phi_d m^3 z_1^2} \leq [\sigma_F]_1$$</div>
+                <div class="formula">$$\sigma_{F2} = \frac{2K_F T_1 Y_{Fa} Y_{Sa} Y_\varepsilon}{\Phi_d m^3 z_1^2} \leq [\sigma_F]_2$$</div>
+                <div class="formula">$$\sigma_{F3} = \frac{2K_F T_1 Y_{Fa} Y_{Sa} Y_\varepsilon}{\Phi_d m^3 z_1^2} \leq [\sigma_F]_3$$</div>
+            </div>
+            
+            <p>齿根弯曲疲劳强度满足要求。</p>
+            
+            <!-- 制作成本分析 -->
+            <h2>制作成本分析</h2>
+            <p>总成本分析如表所示：</p>
+            <table class="simple-table">
+                <tr>
+                    <th>名称</th>
+                    <th>单价</th>
+                    <th>总价</th>
+                </tr>
+                <tr>
+                    <td>带法兰挡边薄壁轴承（内径35外径47厚度7）</td>
+                    <td>8.5元</td>
+                    <td>169元</td>
+                </tr>
+                <tr>
+                    <td>KP000_10mm立式轴承座</td>
+                    <td>2.8元</td>
+                    <td>117.05元</td>
+                </tr>
+                <tr>
+                    <td>KP004_20mm立式轴承座</td>
+                    <td>3.8元</td>
+                    <td>15.2元</td>
+                </tr>
+                <tr>
+                    <td>不锈钢直角角踝（10个）</td>
+                    <td>2.3元</td>
+                    <td>24.5元</td>
+                </tr>
+                <tr>
+                    <td>T型连接件</td>
+                    <td>4元</td>
+                    <td>14元</td>
+                </tr>
+                <tr>
+                    <td>欧标铝管连接件</td>
+                    <td>0.7元</td>
+                    <td>33.6元</td>
+                </tr>
+                <tr>
+                    <td>内10外15法兰轴承</td>
+                    <td>1.3元</td>
+                    <td>5.2元</td>
+                </tr>
+                <tr>
+                    <td>10mm光轴（740mm）</td>
+                    <td>10元</td>
+                    <td>30元</td>
+                </tr>
+                <tr>
+                    <td>八寸轮胎前轮</td>
+                    <td>105元</td>
+                    <td>210元</td>
+                </tr>
+                <tr>
+                    <td>八寸轮胎后轮</td>
+                    <td>25元</td>
+                    <td>50元</td>
+                </tr>
+                <tr>
+                    <td>前轮电机</td>
+                    <td>150元</td>
+                    <td>300元</td>
+                </tr>
+                <tr>
+                    <td>电池</td>
+                    <td>200元</td>
+                    <td>200元</td>
+                </tr>
+                <tr>
+                    <td>开发板</td>
+                    <td>100元</td>
+                    <td>100元</td>
+                </tr>
+                <tr>
+                    <td>总计</td>
+                    <td colspan="2">1577.87元</td>
+                </tr>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2024 湖北工业大学 - 全自动薏米种植施肥机项目组</p>
+    </footer>
+
+    <script>
+        // ===== 原有导航栏滚动代码（保留）=====
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

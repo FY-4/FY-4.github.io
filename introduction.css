@@ -1,0 +1,264 @@
+/* 声明自定义字体（修改为你的字体名称和文件路径） */
+@font-face {
+  font-family: 'main'; /* 自定义字体名（后续调用用这个） */
+  src: url('./resources/1.ttf') format('truetype');
+  font-weight: normal; /* 字体粗细（正常/加粗等） */
+  font-style: normal;  /* 字体样式（正常/斜体等） */
+  font-display: swap;  /* 关键：字体加载中先显示回退字体，加载完成后替换，避免页面闪烁 */
+}
+
+/* 基础样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif,"main";
+}
+
+ul {
+    list-style: none;
+}
+
+h1{
+    font-family: 'main';
+}
+
+body {
+    line-height: 1.6;
+    color: #333;
+    /* 设置整个页面的背景图片 */
+    background-image: url('./introduction/'); /* 你的背景图片 */
+    background-attachment: fixed; /* 固定背景，不随内容滚动 */
+    background-size: cover; /* 覆盖整个页面 */
+    background-position: center; /* 居中 */
+    background-repeat: no-repeat; /* 不重复 */
+}
+
+.main-content {
+    background-color: rgba(255, 255, 255, 0.3); /* 原半透明白色，若要绿色可改下方示例 */
+    /* 核心：最小高度占满视口，内容超出时自动增高 */
+    min-height: 100vh; 
+    padding-top: 20px;
+    box-sizing: border-box; /* 保证padding不额外增高 */
+}
+
+/* 顶部导航栏样式 - 核心修改 */
+.navbar {
+    /* 移除原有背景色，默认透明 */
+    background-color: transparent; 
+    box-shadow: none; /* 初始无阴影 */
+    position: fixed; /* 改为fixed，始终固定在顶部 */
+    top: 0;
+    left: 0;
+    right: 0; /* 撑满宽度 */
+    z-index: 1000;
+    padding: 0 20px;
+    backdrop-filter: blur(15px); /* 毛玻璃效果保留 */
+    /* 过渡动画，让背景/阴影变化更丝滑 */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 新增：滚动后的导航栏样式 */
+.navbar.scrolled {
+    background-color: rgba(255, 255, 255, 0.95); /* 滚动后显示半透明白色 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 显示阴影 */
+}
+
+.navbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+}
+
+/* 左侧区域 */
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.logo a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #2c88d3;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.logo img {
+    width: 120px;
+    height: 60px;
+    margin-right: 0px;
+}
+
+/* 主菜单样式 */
+.main-menu ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.main-menu a {
+    text-decoration: none;
+    color: #5b8964;
+    font-weight: 800;
+    font-size: 18px;
+    padding: 8px 0;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.main-menu a:hover {
+    color: #070707; /* 改为绿色，更符合农业主题 */
+}
+
+.main-menu a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: #2a7d3e; /* 改为绿色 */
+    bottom: 0;
+    left: 0;
+    transition: width 0.3s;
+}
+
+.main-menu a:hover::after {
+    width: 100%;
+}
+
+/* 右侧区域 */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    gap: 30px;
+}
+
+.secondary-menu ul {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+}
+
+.secondary-menu a {
+    text-decoration: none;
+    color: #5b8964;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.secondary-menu a:hover {
+    color: #000000;
+}
+
+.icon-menu {
+    display: flex;
+    gap: 20px;
+}
+
+.icon-link {
+    color: #333;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.icon-link:hover {
+    color: #2a7d3e;
+}
+
+/* 页脚 */
+footer {
+    background-color: rgba(42, 125, 62, 0.9);
+    color: white;
+    text-align: center;
+    padding: 30px;
+    margin-top: 100px; /* 给底部图片留出空间 */
+    position: relative;
+    z-index: 1; /* 确保页脚在底部图片上面 */
+}
+/* 页脚结束 */
+
+
+.main-content{
+    background-color: #e4e9de;
+    box-sizing: border-box;
+
+}
+
+.main-content .container{
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 50px 40px;
+    background-color: #ffffff;
+    margin-top: 50px;
+    line-height: 40px;
+}
+
+.main-content .container .title{
+    border-bottom: 1px solid black;
+}
+
+/* 在introduction.css末尾添加以下样式 */
+
+/* 内容区块样式 */
+.section {
+    margin: 40px 0;
+    padding: 20px 0;
+}
+
+.section h2 {
+    color: #2a7d3e;
+    font-size: 24px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e4e9de;
+}
+
+.section h3 {
+    color: #333;
+    font-size: 20px;
+    margin: 25px 0 15px 0;
+}
+
+.section p {
+    margin-bottom: 15px;
+    line-height: 1.8;
+    color: #444;
+}
+
+
+.bozhong , .liandong , .qianlunqvdong , .xingjingjigou , .tulunshengjiang , .litianjigou , .tulunkaiguan , .jiaoshuijigou , .bozhongqi , .shifeijigou , .shifeiqi , .introduction-main {
+    width: 100%;
+    max-width: 1000px; /* 设置最大宽度 */
+    height: auto;
+    object-fit: cover; /* 等比例覆盖，保持宽高比 */
+    display: block;
+    margin: 0 auto;
+}
+
+.section ul {
+    margin: 15px 0 15px 20px;
+    line-height: 1.8;
+}
+
+.section li {
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.image-container {
+    text-align: center;
+    margin: 25px 0;
+}
+
+.image-container p {
+    color: #777;
+    font-style: italic;
+    margin-top: 10px;
+}
