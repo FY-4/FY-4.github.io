@@ -241,7 +241,7 @@ body {
     color: #666;
 }
 
-/* ==================== 产品特色区域 - 大疆风格 ==================== */
+/* ==================== 产品特色区域 ==================== */
 .content-section {
     max-width: 1400px;
     margin: 80px auto;
@@ -249,7 +249,7 @@ body {
     background: linear-gradient(135deg, 
         rgba(222, 228, 222, 0.6) 0%, 
         rgba(224, 228, 220, 0.6) 100%);
-    border-radius: 20px;
+
     box-shadow: 0 20px 60px rgba(0, 255, 255, 0.1),
                 0 0 0 1px rgba(0, 255, 255, 0.05);
     position: relative;
@@ -335,7 +335,6 @@ body {
 .feature-card {
     background: rgba(95, 159, 121, 0.751);
     padding: 40px 30px;
-    border-radius: 16px;
     text-align: center;
     flex: 1;
     min-width: 280px;
@@ -455,7 +454,7 @@ body {
     z-index: 2;
 }
 
-/* ==================== 技术参数区域 - 优化版 ==================== */
+/* ==================== 技术参数区域  ==================== */
 .info-section {
     max-width: 1400px;
     margin: 80px auto;
@@ -463,7 +462,6 @@ body {
     background: linear-gradient(135deg, 
         rgba(253, 255, 252, 0.6) 0%, 
         rgba(255, 255, 255, 0.6) 100%);
-    border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 255, 255, 0.1),
                 0 0 0 1px rgba(0, 255, 255, 0.05);
     position: relative;
@@ -566,7 +564,6 @@ body {
 .param-card {
     background:#78AC8B;
     padding: 30px 25px;
-    border-radius: 12px;
     border: 1px solid rgba(0, 255, 247, 0.1);
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
@@ -793,6 +790,7 @@ body {
     height: 400px;
     background-image: url('./resources/A-footer1.png');
     background-size: cover;
+    background-position-x: -60px;
 
 
 }
@@ -1050,6 +1048,5 @@ footer {
             font-size: 28px;
         }
     }
-
 
 
