@@ -7,6 +7,8 @@
     <title>HBUT-全自动薏米种植机</title>
     <link rel="stylesheet" href="contact.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 导入登陆界面css文件 -->
+    <link rel="stylesheet" href="./login/login.css">
 </head>
 
 <body>
@@ -45,7 +47,7 @@
                 <div class="icon-menu">
                     <a href="#" class="icon-link"><i class="fas fa-search"></i></a>
                     <a href="#" class="icon-link"><i class="fas fa-shopping-cart"></i></a>
-                    <a href="#" class="icon-link"><i class="fas fa-user"></i></a>
+                    <a href="#" class="icon-link-login"><i class="fas fa-user"></i></a>
                 </div>
             </div>
         </div>
@@ -75,27 +77,30 @@
                             Request a personalized demo,or request a trial of RCer's partner marketing platform.
                         </p>
                         <h3 class="main-left-font-h3">
-                            Try collaborating with us  <br>
+                            Try collaborating with us <br>
                         </h3>
                         <p class="main-left-font-p">
-                            Learn about our structural design, drive agricultural modernization, and work with us.  
+                            Learn about our structural design, drive agricultural modernization, and work with us.
                         </p>
                         <h3 class="main-left-font-h3">
                             Share your story<br>
                         </h3>
                         <p class="main-left-font-p">
-                            If you are very interested in agricultural machinery, or interested in the International College Student Agricultural Machinery Equipment Competition, you can contact us.
+                            If you are very interested in agricultural machinery, or interested in the International
+                            College Student Agricultural Machinery Equipment Competition, you can contact us.
                         </p>
                         <h3 class="main-left-font-h3">
                             Technology stack sharing<br>
                         </h3>
                         <p class="main-left-font-p">
-                            If you are interested in the electronic control or vision technologies in our agricultural machinery, or have better solutions, you are welcome to share and communicate with us.
+                            If you are interested in the electronic control or vision technologies in our agricultural
+                            machinery, or have better solutions, you are welcome to share and communicate with us.
                         </p>
                     </div>
                     <div class="main-right">
                         <div class="form-container">
-                            <p class="required-note">Please note: all fields are required.We guarantee that your information will not be disclosed.</p>
+                            <p class="required-note">Please note: all fields are required.We guarantee that your
+                                information will not be disclosed.</p>
 
                             <form class="simple-form">
                                 <div class="form-field">
@@ -109,13 +114,13 @@
                                 </div>
 
                                 <div class="form-sexs">
-                                    <label >Gender:</label>
+                                    <label>Gender:</label>
                                     <input type="radio" name="gender" value="male" checked> male
                                     <input type="radio" name="gender" value="female"> female
                                 </div>
 
                                 <div class="form-sexs">
-                                    <label >Are you an adult:</label>
+                                    <label>Are you an adult:</label>
                                     <input type="radio" name="adult" value="male" checked> adult
                                     <input type="radio" name="adult" value="female"> minor
                                 </div>
@@ -123,7 +128,7 @@
                                 <div class="form-field">
                                     <label>Company Name/University Name:</label>
                                     <input type="text" required>
-                                </div>      
+                                </div>
 
                                 <div class="form-field">
                                     <label>Company Email/Own Email:</label>
@@ -134,8 +139,8 @@
                                     <p>Hi 👋 I welcome to communicate and learn together</p>
                                 </div>
                                 <div class="form-buttons">
-                                        <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
-                                        <button type="submit" class="submit-btn" id="submitBtn">Submit</button>
+                                    <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+                                    <button type="submit" class="submit-btn" id="submitBtn">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -156,10 +161,10 @@
 
                     <div class="contact-plateform">
                         <div class="contact-blbl">
-                            
+
                         </div>
                         <p>HBUT Competitive Robot Team</p>
-                        
+
                     </div>
 
                 </div>
@@ -172,82 +177,85 @@
 
 
     <script>
-    // ===== 导航栏滚动效果 =====
-    const navbar = document.querySelector('.navbar');
-    window.addEventListener('scroll', function () {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-    
-    // ===== 表单处理功能 =====
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('.simple-form');
-        const submitBtn = document.getElementById('submitBtn');
-        const cancelBtn = document.getElementById('cancelBtn');
-        
-        // 提交按钮点击事件
-        submitBtn.addEventListener('click', function(e) {
-            e.preventDefault(); // 防止表单默认提交
-            
-            // 获取所有必填字段
-            const requiredInputs = form.querySelectorAll('input[required]');
-            let allFilled = true;
-            
-            // 检查所有必填字段是否已填写
-            requiredInputs.forEach(input => {
-                if (!input.value.trim()) {
-                    allFilled = false;
-                    input.style.borderColor = '#dc3545'; // 红色边框提示
-                } else {
-                    input.style.borderColor = '#ccc'; // 重置边框颜色
-                }
-            });
-            
-            if (!allFilled) {
-                alert('Please fill in all required fields.');
-                return;
+        // ===== 导航栏滚动效果 =====
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
             }
-            
-            // 所有字段已填写，显示成功消息
-            alert('Submission successful! Thank you for your message.');
-            
-            // 清空表单
-            form.reset();
-            
-            // 重置所有输入框边框颜色
-            const allInputs = form.querySelectorAll('input');
-            allInputs.forEach(input => {
-                input.style.borderColor = '#ccc';
+        });
+
+        // ===== 表单处理功能 =====
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('.simple-form');
+            const submitBtn = document.getElementById('submitBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+
+            // 提交按钮点击事件
+            submitBtn.addEventListener('click', function (e) {
+                e.preventDefault(); // 防止表单默认提交
+
+                // 获取所有必填字段
+                const requiredInputs = form.querySelectorAll('input[required]');
+                let allFilled = true;
+
+                // 检查所有必填字段是否已填写
+                requiredInputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        allFilled = false;
+                        input.style.borderColor = '#dc3545'; // 红色边框提示
+                    } else {
+                        input.style.borderColor = '#ccc'; // 重置边框颜色
+                    }
+                });
+
+                if (!allFilled) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+
+                // 所有字段已填写，显示成功消息
+                alert('Submission successful! Thank you for your message.');
+
+                // 清空表单
+                form.reset();
+
+                // 重置所有输入框边框颜色
+                const allInputs = form.querySelectorAll('input');
+                allInputs.forEach(input => {
+                    input.style.borderColor = '#ccc';
+                });
+            });
+
+            // 取消按钮点击事件
+            cancelBtn.addEventListener('click', function () {
+                // 清空表单
+                form.reset();
+
+                // 重置所有输入框边框颜色
+                const allInputs = form.querySelectorAll('input');
+                allInputs.forEach(input => {
+                    input.style.borderColor = '#ccc';
+                });
+
+                // 可选：显示取消提示
+                alert('Form has been cleared.');
+            });
+
+            // 输入时移除错误提示
+            const inputs = form.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', function () {
+                    this.style.borderColor = '#ccc';
+                });
             });
         });
-        
-        // 取消按钮点击事件
-        cancelBtn.addEventListener('click', function() {
-            // 清空表单
-            form.reset();
-            
-            // 重置所有输入框边框颜色
-            const allInputs = form.querySelectorAll('input');
-            allInputs.forEach(input => {
-                input.style.borderColor = '#ccc';
-            });
-            
-            // 可选：显示取消提示
-            alert('Form has been cleared.');
-        });
-        
-        // 输入时移除错误提示
-        const inputs = form.querySelectorAll('input');
-        inputs.forEach(input => {
-            input.addEventListener('input', function() {
-                this.style.borderColor = '#ccc';
-            });
-        });
-    });
-</script>
+    </script>
+
+    <!-- 有关登录界面的script导入放置在最下面 -->
+    <script src="./login/login.js"></script>
 </body>
 
 </html>

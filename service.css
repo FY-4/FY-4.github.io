@@ -155,13 +155,25 @@ body {
 }
 
 .icon-link {
-    color: #fff;
+    color: #333;
     font-size: 18px;
     text-decoration: none;
     transition: color 0.3s;
 }
 
+.icon-link-login {
+    color: #333;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+
 .icon-link:hover {
+    color: #2a7d3e;
+}
+
+.icon-link-login:hover {
     color: #2a7d3e;
 }
 
