@@ -580,11 +580,13 @@
             
             // 如果未登录，则重定向到登录页面
             if(loginState !== 1) {
-                alert('Please log in first, otherwise you do not have permission to download.');
-                window.history.back();
+                alert("Currently, it is available for free download, but later you will need to log in to access the download page.");
+                alert('目前免费开放下载，后续需要登录才可以进入下载界面');
+                // window.history.back();
             }
         });
     </script>
 </body>
+
 
 </html>
