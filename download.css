@@ -193,6 +193,18 @@ body {
     transition: color 0.3s;
 }
 
+.icon-link-search {
+    color: #333;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.icon-link-search:hover {
+    color: #2a7d3e;
+}
+
+
 
 .icon-link:hover {
     color: #2a7d3e;

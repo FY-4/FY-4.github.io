@@ -193,6 +193,18 @@ body {
     transition: color 0.3s;
 }
 
+.icon-link-search {
+    color: #333;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.icon-link-search:hover {
+    color: #2a7d3e;
+}
+
+
 
 .icon-link:hover {
     color: #2a7d3e;
@@ -553,4 +565,151 @@ footer {
 .main-content .container .title {
     border-bottom: 1px solid black;
 }
+
+
+/* 评论区样式开始 */
+/* 评论区域样式 */
+.comment-form {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.comment-form h4 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 16px;
+}
+
+.comment-input-group {
+    margin-bottom: 15px;
+}
+
+.comment-input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+    font-weight: 500;
+}
+
+.comment-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.comment-textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: vertical;
+    box-sizing: border-box;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+/* 星星评分样式 */
+.rating-input {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.star-rating {
+    display: flex;
+    gap: 5px;
+}
+
+.star-rating i {
+    font-size: 24px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.star-rating i:hover,
+.star-rating i.active {
+    color: #ff9800;
+}
+
+.star-rating i:hover ~ i {
+    color: #ddd;
+}
+
+.rating-text {
+    font-size: 14px;
+    color: #666;
+}
+
+/* 提交按钮 */
+.submit-comment-btn {
+    background: #2a7d3e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.submit-comment-btn:hover {
+    background: #1e6b30;
+}
+
+.submit-comment-btn:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+
+/* 评论项样式 */
+.comment-item {
+    margin-bottom: 15px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-author {
+    font-weight: bold;
+    color: #333;
+}
+
+.comment-rating {
+    color: #ff9800;
+    font-size: 14px;
+}
+
+.comment-date {
+    font-size: 12px;
+    color: #999;
+}
+
+.comment-content {
+    line-height: 1.6;
+    color: #555;
+}
+
+/* 空评论状态 */
+.no-comments {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+    font-style: italic;
+}
+/* 评论区样式结束 */
 

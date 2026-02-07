@@ -27,7 +27,7 @@ h1{
 body {
     line-height: 1.6;
     color: #333;
-    background-image: url('./resources/main-content1.jpg');
+    background-image: url('./resources/main-content1.webp');
     background-attachment: fixed;
     background-size: cover;
     background-position: center;
@@ -170,6 +170,18 @@ body {
     text-decoration: none;
     transition: color 0.3s;
 }
+
+.icon-link-search {
+    color: #333;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.icon-link-search:hover {
+    color: #2a7d3e;
+}
+
 
 
 .icon-link:hover {
