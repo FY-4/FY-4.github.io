@@ -1,0 +1,804 @@
+<!-- future.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实时用量监控 - 薏米自动播种施肥机</title>
+    <link rel="stylesheet" href="./future.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 导入登陆界面css文件 -->
+    <link rel="stylesheet" href="./login/login.css">
+    <!-- 引入Socket.IO客户端 -->
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+    <!-- 引入Chart.js用于图表 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 引入ECharts（备用） -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-left">
+                <div class="logo">
+                    <a href="https://zhuanlan.zhihu.com/p/594354619" target="_blank">
+                        <img src="./resources/index-nav.png" alt="HBUT Logo">
+                        <span></span>
+                    </a>
+                </div>
+
+                <nav class="main-menu">
+                    <ul>
+                        <li><a href="./introduction.html">基本介绍</a></li>
+                        <li><a href="./video.html">视频介绍</a></li>
+                        <li><a href="./calculate.html">参数设计</a></li>
+                        <li><a href="./download.html">资料下载</a></li>
+                        <li><a href="./future.html" onclick="alert('此页面需连接笔记本通过内网穿透访问连接，API服务器目前没有明确配置了CORS和正确的 WebSocket，但是你无法正常使用，请谅解！')">网端互联</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="navbar-right">
+                <nav class="secondary-menu">
+                    <ul>
+                        <li><a href="./service.html">服务与支持</a></li>
+                        <li><a href="#" onclick="alert('正在修建')">合作与分享</a></li>
+                        <li><a href="./contact.html">联系方式</a></li>
+                        <li><a href="./shopping.html">商城</a></li>
+                    </ul>
+                </nav>
+
+                <div class="icon-menu">
+                    <a href="#" class="icon-link-search"><i class="fas fa-search"></i></a>
+                    <a href="./shopping.html" class="icon-link"><i class="fas fa-shopping-cart"></i></a>
+                    <a href="#" class="icon-link-login"><i class="fas fa-user"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <main class="main-content">
+        <h2 class="maintitle">Backend data system</h2>
+        <div class="dashboard-container">
+            <!-- 实时数据显示 -->
+            <div class="realtime-stats">
+                <h2>Real-time usage</h2>
+                <div class="stats-grid">
+                    <div class="stat-card seed">
+                        <h3>种子剩余</h3>
+                        <div class="stat-value" id="seed-value">100%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill seed-fill" id="seed-progress"></div>
+                        </div>
+                        <div class="stat-desc">剩余容量: <span id="seed-kg">50kg</span></div>
+                    </div>
+
+                    <div class="stat-card water">
+                        <h3>水剩余</h3>
+                        <div class="stat-value" id="water-value">100%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill water-fill" id="water-progress"></div>
+                        </div>
+                        <div class="stat-desc">剩余容量: <span id="water-l">100L</span></div>
+                    </div>
+
+                    <div class="stat-card fertilizer1">
+                        <h3>复合肥剩余</h3>
+                        <div class="stat-value" id="fertilizer1-value">100%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill fertilizer1-fill" id="fertilizer1-progress"></div>
+                        </div>
+                        <div class="stat-desc">剩余容量: <span id="fertilizer1-kg">50kg</span></div>
+                    </div>
+
+                    <div class="stat-card fertilizer2">
+                        <h3>有机肥剩余</h3>
+                        <div class="stat-value" id="fertilizer2-value">100%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill fertilizer2-fill" id="fertilizer2-progress"></div>
+                        </div>
+                        <div class="stat-desc">剩余容量: <span id="fertilizer2-kg">30kg</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 历史趋势图表 -->
+            <div class="chart-container">
+                <h2 class="biaoge">Usage Trend Analysis</h2>
+                <div class="chart-controls">
+                    <button class="chart-btn active" data-period="1h">1小时</button>
+                    <button class="chart-btn" data-period="6h">6小时</button>
+                    <button class="chart-btn" data-period="24h">24小时</button>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="usage-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- 用量统计信息 -->
+            <div class="usage-info">
+                <div class="info-card">
+                    <h3 style="font-style: italic;">Today's Usage Statistics</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">已播种面积:</span>
+                            <span class="info-value" id="planted-area">0 亩</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">已施肥量:</span>
+                            <span class="info-value" id="total-fertilizer">0 kg</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">用水总量:</span>
+                            <span class="info-value" id="total-water">0 L</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">运行时间:</span>
+                            <span class="info-value" id="running-time">00:00:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 警报系统 -->
+                <div class="alert-card">
+                    <h3 style="font-style: italic;color: rgb(255, 255, 255);margin-left: 20px;">Real-time terminal data
+                        display</h3>
+                    <div class="alert-list" id="alert-list">
+                        <div class="alert-item info">
+                            <span>[Info] All systems are operating normally.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 远程控制面板 -->
+            <div class="control-panel">
+                <h2 style="font-style: italic;color: rgb(255, 255, 255);">Remote control-panel</h2>
+                <div class="control-buttons">
+                    <button class="control-btn" id="btn-refill-seed" onclick="alert('No permission')">
+                       add seed
+                    </button>
+                    <button class="control-btn" id="btn-refill-water" onclick="alert('No permission')" >
+                        add water
+                    </button>
+                    <button class="control-btn" id="btn-refill-fertilizer1" onclick="alert('No permission')">
+                        add compound
+                    </button>
+                    <button class="control-btn" id="btn-refill-fertilizer2" onclick="alert('No permission')">
+                        add organic
+                    </button>
+                    <button class="control-btn emergency" id="btn-emergency-stop" onclick="alert('No permission')">
+                        stop
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 连接状态指示 -->
+        <div class="connection-status">
+            <div class="status-indicator" id="status-indicator">
+                <span class="status-dot"></span>
+                <span class="status-text">连接中...</span>
+            </div>
+            <div class="server-info">
+                <span>API地址: <span id="api-address">127.0.0.1:5000</span></span>
+                <button class="btn-sm" id="btn-change-api" onclick="alert('No permission')">更改</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 配置
+        const config = {
+            apiUrl: 'http://127.0.0.1:5000',
+            updateInterval: 2000,  // 2秒更新一次
+            historyData: [],
+            todayStats: {
+                plantedArea: 0,
+                totalFertilizer: 0,
+                totalWater: 0,
+                runningTime: '00:00:00',
+                startTime: null,           // 今日开始时间
+                startSeed: 50,            // 今日开始时种子量(kg)
+                startWater: 100,          // 今日开始时水量(L)
+                startFertilizer1: 50,     // 今日开始时复合肥量(kg)
+                startFertilizer2: 30,     // 今日开始时有机肥量(kg)
+                currentSeed: 50,          // 当前种子量
+                currentWater: 100,        // 当前水量
+                currentFertilizer1: 50,   // 当前复合肥量
+                currentFertilizer2: 30,   // 当前有机肥量
+                totalSeededArea: 0,       // 累计播种面积(亩)
+                efficiency: 0            // 效率(%)
+            }
+        };
+
+        // 初始化Socket.IO连接
+        const socket = io(config.apiUrl);
+        let usageChart = null;
+
+        // DOM元素
+        const elements = {
+            seedValue: document.getElementById('seed-value'),
+            seedProgress: document.getElementById('seed-progress'),
+            seedKg: document.getElementById('seed-kg'),
+
+            waterValue: document.getElementById('water-value'),
+            waterProgress: document.getElementById('water-progress'),
+            waterL: document.getElementById('water-l'),
+
+            fertilizer1Value: document.getElementById('fertilizer1-value'),
+            fertilizer1Progress: document.getElementById('fertilizer1-progress'),
+            fertilizer1Kg: document.getElementById('fertilizer1-kg'),
+
+            fertilizer2Value: document.getElementById('fertilizer2-value'),
+            fertilizer2Progress: document.getElementById('fertilizer2-progress'),
+            fertilizer2Kg: document.getElementById('fertilizer2-kg'),
+
+            statusIndicator: document.getElementById('status-indicator'),
+            statusText: document.querySelector('.status-text'),
+            alertList: document.getElementById('alert-list'),
+
+            // 今日统计元素
+            plantedArea: document.getElementById('planted-area'),
+            totalFertilizer: document.getElementById('total-fertilizer'),
+            totalWater: document.getElementById('total-water'),
+            runningTime: document.getElementById('running-time')
+        };
+
+        // Socket.IO事件处理
+        socket.on('connect', () => {
+            console.log('已连接到用量服务器');
+            updateConnectionStatus(true);
+            socket.emit('request_usage');
+        });
+
+        socket.on('connected', (data) => {
+            console.log('服务器消息:', data.message);
+            addAlert('[Info]  Connected to the Yimi Machine Usage Monitoring System.', 'success');
+        });
+
+        socket.on('usage_update', (data) => {
+            console.log('收到用量更新:', data);
+            updateUsageDisplay(data);
+
+            // 计算今日用量统计
+            calculateTodayUsage(data);
+
+            updateHistoryData(data);
+            updateChart();
+            checkAlerts(data);
+
+            // 检查是否需要重置统计
+            checkAndResetDailyStats();
+        });
+
+        socket.on('disconnect', () => {
+            updateConnectionStatus(false);
+            addAlert('[Warning]  The connection to the server has been lost.', 'warning');
+        });
+
+        socket.on('connect_error', (error) => {
+            console.error('连接错误:', error);
+            addAlert('[Error]  Connection failed, attempting to reconnect. Please check your API address.', 'error');
+            setTimeout(() => socket.connect(), 5000);
+        });
+
+        // 更新连接状态
+        function updateConnectionStatus(connected) {
+            const indicator = elements.statusIndicator;
+            const statusDot = indicator.querySelector('.status-dot');
+            const statusText = indicator.querySelector('.status-text');
+
+            if (connected) {
+                indicator.classList.remove('disconnected');
+                indicator.classList.add('connected');
+                statusDot.style.backgroundColor = '#4CAF50';
+                statusText.textContent = '已连接';
+            } else {
+                indicator.classList.remove('connected');
+                indicator.classList.add('disconnected');
+                statusDot.style.backgroundColor = '#f44336';
+                statusText.textContent = '未连接';
+            }
+        }
+
+
+        // 在页面加载时初始化今日统计
+        document.addEventListener('DOMContentLoaded', () => {
+            initChart();
+
+            // 检查本地存储中是否有上次重置日期
+            const now = new Date();
+            const today = now.toDateString();
+            const lastReset = localStorage.getItem('lastResetDate');
+
+            if (lastReset !== today) {
+                // 如果是新的一天，清空开始时间，让系统重新初始化
+                config.todayStats.startTime = null;
+            }
+
+            // 初始请求
+            fetch(`${config.apiUrl}/api/usage`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        updateUsageDisplay(data.data);
+                        calculateTodayUsage(data.data); // 使用新的计算函数
+                    }
+                })
+                .catch(error => {
+                    console.error('获取初始数据失败:', error);
+                    addAlert('[Error] Unable to connect to the usage server.', 'error');
+                });
+
+            // 定期检查重置
+            setInterval(checkAndResetDailyStats, 60000); // 每分钟检查一次
+        });
+
+        // 更新今日统计
+        function updateTodayStats(data) {
+            // 根据实际接收的数据更新统计，如果没有特定字段，则使用模拟数据
+            if (data.daily_stats) {
+                config.todayStats.plantedArea = data.daily_stats.planted_area || config.todayStats.plantedArea;
+                config.todayStats.totalFertilizer = data.daily_stats.total_fertilizer || config.todayStats.totalFertilizer;
+                config.todayStats.totalWater = data.daily_stats.total_water || config.todayStats.totalWater;
+                config.todayStats.runningTime = data.daily_stats.running_time || config.todayStats.runningTime;
+            } else {
+                // 如果服务器没有提供日统计数据，我们可以基于用量变化做一些估算
+                // 这里可以根据实际情况调整算法
+            }
+
+            // 更新DOM
+            elements.plantedArea.textContent = `${config.todayStats.plantedArea.toFixed(2)} 亩`;
+            elements.totalFertilizer.textContent = `${config.todayStats.totalFertilizer.toFixed(2)} kg`;
+            elements.totalWater.textContent = `${config.todayStats.totalWater.toFixed(2)} L`;
+            elements.runningTime.textContent = config.todayStats.runningTime;
+        }
+
+        // 更新用量显示
+        function updateUsageDisplay(data) {
+            // 更新种子
+            const seedPercent = data.seed ? data.seed.toFixed(1) : 100;
+            elements.seedValue.textContent = `${seedPercent}%`;
+            elements.seedProgress.style.width = `${seedPercent}%`;
+            elements.seedKg.textContent = `${(seedPercent * 0.5).toFixed(1)}kg`;
+
+            // 更新水
+            const waterPercent = data.water ? data.water.toFixed(1) : 100;
+            elements.waterValue.textContent = `${waterPercent}%`;
+            elements.waterProgress.style.width = `${waterPercent}%`;
+            elements.waterL.textContent = `${(waterPercent * 1).toFixed(1)}L`;
+
+            // 更新复合肥
+            const fertilizer1Percent = data.fertilizer1 ? data.fertilizer1.toFixed(1) : 100;
+            elements.fertilizer1Value.textContent = `${fertilizer1Percent}%`;
+            elements.fertilizer1Progress.style.width = `${fertilizer1Percent}%`;
+            elements.fertilizer1Kg.textContent = `${(fertilizer1Percent * 0.5).toFixed(1)}kg`;
+
+            // 更新有机肥
+            const fertilizer2Percent = data.fertilizer2 ? data.fertilizer2.toFixed(1) : 100;
+            elements.fertilizer2Value.textContent = `${fertilizer2Percent}%`;
+            elements.fertilizer2Progress.style.width = `${fertilizer2Percent}%`;
+            elements.fertilizer2Kg.textContent = `${(fertilizer2Percent * 0.3).toFixed(1)}kg`;
+        }
+
+        // 更新历史数据
+        function updateHistoryData(data) {
+            const now = new Date();
+            const timeLabel = now.getHours() + ':' +
+                now.getMinutes().toString().padStart(2, '0');
+
+            config.historyData.push({
+                time: timeLabel,
+                seed: data.seed || 100,
+                water: data.water || 100,
+                fertilizer1: data.fertilizer1 || 100,
+                fertilizer2: data.fertilizer2 || 100
+            });
+
+            // 只保留最近50条数据
+            if (config.historyData.length > 50) {
+                config.historyData.shift();
+            }
+        }
+
+        // 初始化图表
+        function initChart() {
+            const ctx = document.getElementById('usage-chart').getContext('2d');
+
+            usageChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: '种子剩余',
+                            data: [],
+                            borderColor: '#4CAF50',
+                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: '水剩余',
+                            data: [],
+                            borderColor: '#2196F3',
+                            backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: '复合肥剩余',
+                            data: [],
+                            borderColor: '#FF9800',
+                            backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: '有机肥剩余',
+                            data: [],
+                            borderColor: '#9C27B0',
+                            backgroundColor: 'rgba(156, 39, 176, 0.1)',
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: '剩余百分比 (%)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: '时间'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // 更新图表
+        function updateChart() {
+            if (!usageChart || config.historyData.length === 0) return;
+
+            const labels = config.historyData.map(d => d.time);
+            const seedData = config.historyData.map(d => d.seed);
+            const waterData = config.historyData.map(d => d.water);
+            const fertilizer1Data = config.historyData.map(d => d.fertilizer1);
+            const fertilizer2Data = config.historyData.map(d => d.fertilizer2);
+
+            usageChart.data.labels = labels;
+            usageChart.data.datasets[0].data = seedData;
+            usageChart.data.datasets[1].data = waterData;
+            usageChart.data.datasets[2].data = fertilizer1Data;
+            usageChart.data.datasets[3].data = fertilizer2Data;
+
+            usageChart.update();
+        }
+
+        // 检查警报
+        function checkAlerts(data) {
+            const alerts = [];
+
+            if ((data.seed || 100) < 20) {
+                alerts.push({
+                    type: 'warning',
+                    message: `种子剩余不足: ${(data.seed || 100).toFixed(1)}%`,
+                    icon: 'fas fa-exclamation-triangle'
+                });
+            }
+
+            if ((data.water || 100) < 15) {
+                alerts.push({
+                    type: 'warning',
+                    message: `水剩余不足: ${(data.water || 100).toFixed(1)}%`,
+                    icon: 'fas fa-exclamation-triangle'
+                });
+            }
+
+            if ((data.fertilizer1 || 100) < 10) {
+                alerts.push({
+                    type: 'error',
+                    message: `复合肥剩余严重不足: ${(data.fertilizer1 || 100).toFixed(1)}%`,
+                    icon: 'fas fa-times-circle'
+                });
+            }
+
+            if ((data.fertilizer2 || 100) < 10) {
+                alerts.push({
+                    type: 'error',
+                    message: `有机肥剩余严重不足: ${(data.fertilizer2 || 100).toFixed(1)}%`,
+                    icon: 'fas fa-times-circle'
+                });
+            }
+
+            // 更新警报列表
+            updateAlertList(alerts);
+        }
+
+        // 更新警报列表
+        function updateAlertList(alerts) {
+            const alertList = elements.alertList;
+
+            if (alerts.length === 0) {
+                alertList.innerHTML = `
+                <div class="alert-item info">
+                    <span>[Info]  All systems are operating normally.</span>
+                </div>
+            `;
+                return;
+            }
+
+            alertList.innerHTML = '';
+            alerts.forEach(alert => {
+                const alertItem = document.createElement('div');
+                alertItem.className = `alert-item ${alert.type}`;
+                alertItem.innerHTML = `
+                <i class="${alert.icon}"></i>
+                <span>${alert.message}</span>
+            `;
+                alertList.appendChild(alertItem);
+            });
+        }
+
+        // 添加警报
+        function addAlert(message, type = 'info') {
+            const alertList = elements.alertList;
+            const alertItem = document.createElement('div');
+            alertItem.className = `alert-item ${type}`;
+            alertItem.innerHTML = `
+            <span>${message}</span>
+        `;
+            alertList.insertBefore(alertItem, alertList.firstChild);
+        }
+
+        // 控制按钮事件
+        document.getElementById('btn-refill-seed').addEventListener('click', () => {
+            fetch(`${config.apiUrl}/api/refill/seed`, {
+                method: 'POST'
+            }).then(response => response.json())
+                .then(data => {
+                    addAlert('[Info]  Supplementary seed command has been sent.', 'success');
+                }).catch(error => {
+                    addAlert('[Warning]  Failed to send command.', 'warning');
+                });
+        });
+
+        document.getElementById('btn-refill-water').addEventListener('click', () => {
+            fetch(`${config.apiUrl}/api/refill/water`, {
+                method: 'POST'
+            }).then(response => response.json())
+                .then(data => {
+                    addAlert('[Info]  Supplementary water command has been sent.', 'success');
+                }).catch(error => {
+                    addAlert('[Warning]  Failed to water command.', 'warning');
+                });
+        });
+
+        document.getElementById('btn-refill-fertilizer1').addEventListener('click', () => {
+            fetch(`${config.apiUrl}/api/refill/fertilizer1`, {
+                method: 'POST'
+            }).then(response => response.json())
+                .then(data => {
+                    addAlert('[Info]  Supplementary compound fertilizer instruction has been sent', 'success');
+                }).catch(error => {
+                    addAlert('[Warning]  Failed to compound fertilizer command', 'warning');
+                });
+        });
+
+        document.getElementById('btn-refill-fertilizer2').addEventListener('click', () => {
+            fetch(`${config.apiUrl}/api/refill/fertilizer2`, {
+                method: 'POST'
+            }).then(response => response.json())
+                .then(data => {
+                    addAlert('[Info]  Supplementary organic fertilizer instruction has been sent', 'success');
+                }).catch(error => {
+                    addAlert('[Warning]  Failed to organic fertilizer command', 'warning');
+                });
+        });
+
+        document.getElementById('btn-emergency-stop').addEventListener('click', () => {
+            if (confirm('Are you sure you want to perform an emergency stop?')) {
+                fetch(`${config.apiUrl}/api/emergency_stop`, {
+                    method: 'POST'
+                }).then(response => response.json())
+                    .then(data => {
+                        addAlert('[Warning]  Emergency stop command sent', 'warning');
+                    }).catch(error => {
+                        addAlert('[Error]  Failed to send command', 'error');
+                    });
+            }
+        });
+
+        // 图表控制按钮事件
+        document.querySelectorAll('.chart-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                // 移除所有active类
+                document.querySelectorAll('.chart-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // 为当前按钮添加active类
+                this.classList.add('active');
+
+                // 这里可以添加根据时间段筛选数据的逻辑
+                const period = this.getAttribute('data-period');
+                console.log(`切换到时间段: ${period}`);
+            });
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initChart();
+
+            // 初始请求
+            fetch(`${config.apiUrl}/api/usage`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        updateUsageDisplay(data.data);
+                        updateTodayStats(data.data);
+                    }
+                })
+                .catch(error => {
+                    console.error('获取初始数据失败:', error);
+                    addAlert('[Error]  Unable to connect to the usage server.', 'error');
+                });
+
+            // 定期请求更新（备用方案，如果WebSocket连接失败）
+            setInterval(() => {
+                if (!socket.connected) {
+                    fetch(`${config.apiUrl}/api/usage`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                updateUsageDisplay(data.data);
+                                updateTodayStats(data.data);
+                            }
+                        })
+                        .catch(error => console.error('轮询失败:', error));
+                }
+            }, config.updateInterval);
+        });
+
+
+        // 计算今日用量的函数
+        function calculateTodayUsage(currentData) {
+            // 如果今天是第一次运行，初始化开始时间和开始库存
+            if (!config.todayStats.startTime) {
+                config.todayStats.startTime = new Date();
+
+                // 记录开始时的库存量（从百分比转换为实际值）
+                const seedPercent = currentData.seed || 100;
+                const waterPercent = currentData.water || 100;
+                const fertilizer1Percent = currentData.fertilizer1 || 100;
+                const fertilizer2Percent = currentData.fertilizer2 || 100;
+
+                config.todayStats.startSeed = seedPercent * 0.5;
+                config.todayStats.startWater = waterPercent * 1;
+                config.todayStats.startFertilizer1 = fertilizer1Percent * 0.5;
+                config.todayStats.startFertilizer2 = fertilizer2Percent * 0.3;
+
+                config.todayStats.currentSeed = config.todayStats.startSeed;
+                config.todayStats.currentWater = config.todayStats.startWater;
+                config.todayStats.currentFertilizer1 = config.todayStats.startFertilizer1;
+                config.todayStats.currentFertilizer2 = config.todayStats.startFertilizer2;
+            }
+
+            // 获取当前库存量（从百分比转换为实际值）
+            const currentSeedPercent = currentData.seed || 100;
+            const currentWaterPercent = currentData.water || 100;
+            const currentFertilizer1Percent = currentData.fertilizer1 || 100;
+            const currentFertilizer2Percent = currentData.fertilizer2 || 100;
+
+            config.todayStats.currentSeed = currentSeedPercent * 0.5;
+            config.todayStats.currentWater = currentWaterPercent * 1;
+            config.todayStats.currentFertilizer1 = currentFertilizer1Percent * 0.5;
+            config.todayStats.currentFertilizer2 = currentFertilizer2Percent * 0.3;
+
+            // 计算今日用量（开始量 - 当前量，确保不为负数）
+            const seedUsed = Math.max(0, config.todayStats.startSeed - config.todayStats.currentSeed);
+            const waterUsed = Math.max(0, config.todayStats.startWater - config.todayStats.currentWater);
+            const fertilizer1Used = Math.max(0, config.todayStats.startFertilizer1 - config.todayStats.currentFertilizer1);
+            const fertilizer2Used = Math.max(0, config.todayStats.startFertilizer2 - config.todayStats.currentFertilizer2);
+
+            // 计算总施肥量（复合肥 + 有机肥）
+            const totalFertilizerUsed = fertilizer1Used + fertilizer2Used;
+
+            // 计算播种面积（假设每kg种子播种0.2亩）
+            const seededArea = seedUsed * 0.2;
+            config.todayStats.totalSeededArea = seededArea;
+
+            // 计算运行时间
+            const now = new Date();
+            const operationTimeMs = now - config.todayStats.startTime;
+            const hours = Math.floor(operationTimeMs / 3600000);
+            const minutes = Math.floor((operationTimeMs % 3600000) / 60000);
+            const seconds = Math.floor((operationTimeMs % 60000) / 1000);
+
+            // 计算效率（播种面积/运行小时数）
+            let efficiency = 0;
+            if (operationTimeMs > 0) {
+                const hoursDecimal = operationTimeMs / 3600000;
+                efficiency = (seededArea / hoursDecimal).toFixed(2);
+            }
+
+            // 更新DOM元素
+            elements.plantedArea.textContent = `${seededArea.toFixed(2)} 亩`;
+            elements.totalFertilizer.textContent = `${totalFertilizerUsed.toFixed(2)} kg`;
+            elements.totalWater.textContent = `${waterUsed.toFixed(2)} L`;
+            elements.runningTime.textContent =
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            return {
+                seededArea,
+                seedUsed,
+                waterUsed,
+                totalFertilizerUsed,
+                fertilizer1Used,
+                fertilizer2Used,
+                operationTime: `${hours}:${minutes}:${seconds}`,
+                efficiency
+            };
+        }
+
+        // 检查是否需要重置今日统计（在午夜重置）
+        function checkAndResetDailyStats() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+
+            // 如果是午夜（0点），重置今日统计
+            if (currentHour === 0 && currentMinute < 1) { // 只在前一分钟内执行一次
+                const lastReset = localStorage.getItem('lastResetDate');
+                const today = now.toDateString();
+
+                if (lastReset !== today) {
+                    // 重置今日统计数据
+                    config.todayStats = {
+                        startTime: new Date(),
+                        startSeed: config.todayStats.currentSeed,
+                        startWater: config.todayStats.currentWater,
+                        startFertilizer1: config.todayStats.currentFertilizer1,
+                        startFertilizer2: config.todayStats.currentFertilizer2,
+                        currentSeed: config.todayStats.currentSeed,
+                        currentWater: config.todayStats.currentWater,
+                        currentFertilizer1: config.todayStats.currentFertilizer1,
+                        currentFertilizer2: config.todayStats.currentFertilizer2,
+                        totalSeededArea: 0,
+                        efficiency: 0
+                    };
+
+                    // 保存重置日期
+                    localStorage.setItem('lastResetDate', today);
+
+                    // 添加重置提醒
+                    addAlert("[Info]  Today's statistics have been reset", 'info');
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
